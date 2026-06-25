@@ -7,13 +7,17 @@
 from dotenv import load_dotenv
 
 load_dotenv()
+import sys
+import re
+import json
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
-import sys
 
-model = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.3)
-
-from langchain_core.prompts import ChatPromptTemplate
+model = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0.3,
+    model_kwargs={"response_format": {"type": "json_object"}},
+)
 
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -78,4 +82,16 @@ para = sys.stdin.read().strip()
 final_prompt = prompt.invoke({"movie_description": para})
 
 res = model.invoke(final_prompt)
-print(res.content)
+raw = res.content.strip()
+
+# Strip markdown code fences if present
+raw = re.sub(r"^```(?:json)?\s*", "", raw)
+raw = re.sub(r"\s*```$", "", raw)
+
+try:
+    parsed_json = json.loads(raw)
+    print("\nStructured Movie Intelligence (JSON):")
+    print(json.dumps(parsed_json, indent=2))
+except json.JSONDecodeError:
+    print("\nFailed to parse JSON. Raw output:")
+    print(raw)

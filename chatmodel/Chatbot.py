@@ -25,15 +25,16 @@ if choice not in personalities:
     print("Invalid choice")
     exit()
 
+model = ChatGroq(model="llama-3.3-70b-versatile")
+
 messages = [
     SystemMessage(content=personalities[choice]),
 ]
 while True:
     prompt = input("YOU: ")
-    messages.append(HumanMessage(content=prompt))
-    if prompt == "0":
+    if prompt.strip() == "0":
         break
-    model = ChatGroq(model="llama-3.3-70b-versatile")
+    messages.append(HumanMessage(content=prompt))
     res = model.invoke(messages)
     messages.append(AIMessage(content=res.content))
     print("BOT:", res.content)

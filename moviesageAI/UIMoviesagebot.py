@@ -8,7 +8,11 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 
 # ── Model & prompt ─────────────────────────────────────────────────────────────
-model = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.3)
+model = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0.3,
+    model_kwargs={"response_format": {"type": "json_object"}},
+)
 prompt = ChatPromptTemplate.from_messages(
     [
         (
