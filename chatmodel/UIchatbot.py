@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import streamlit as st
-from langchain_mistralai import ChatMistralAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from datetime import datetime
 
@@ -413,7 +413,7 @@ if st.session_state.personality_key is None:
     st.markdown(
         """
     <div class="glass picker-header">
-        <div class="eyebrow">🎭 MoodBot · Mistral Small 2603</div>
+        <div class="eyebrow">🎭 MoodBot · Groq llama-3.3-70b</div>
         <h1>Who should I be<br>today?</h1>
         <p>Pick a personality — the whole chat transforms to match.</p>
     </div>
@@ -574,7 +574,7 @@ if prompt:
 
     # mirrors: model = ChatMistralAI(...); res = model.invoke(messages)
     with st.spinner(p["spinner"]):
-        model = ChatMistralAI(model="mistral-small-2603")
+        model = ChatGroq(model="llama-3.3-70b-versatile")
         res = model.invoke(st.session_state.lc_messages)
 
     # mirrors: messages.append(AIMessage(content=res.content))
