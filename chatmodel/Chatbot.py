@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from langchain_mistralai import ChatMistralAI
-from langchain.messages import HumanMessage, AIMessage, SystemMessage
+from langchain_groq import ChatGroq
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 # two issues are here 1st Short term memory 2nd Large context window and no roles are defined
 
@@ -33,7 +33,7 @@ while True:
     messages.append(HumanMessage(content=prompt))
     if prompt == "0":
         break
-    model = ChatMistralAI(model="mistral-small-2603")
+    model = ChatGroq(model="llama-3.3-70b-versatile")
     res = model.invoke(messages)
     messages.append(AIMessage(content=res.content))
     print("BOT:", res.content)
